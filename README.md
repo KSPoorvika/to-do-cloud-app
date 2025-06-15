@@ -9,11 +9,11 @@ I created this project to practice core front-end skills and understand how basi
 
 ##  Features
 
-- ➕ Add new tasks  
-- ✅ Mark tasks as done  
-- 🗑️ Delete completed tasks  
-- 💾 Tasks stay saved (thanks to `localStorage`)  
-- 📱 Mobile-friendly layout  
+- Add new tasks  
+-  Mark tasks as done  
+-  Delete completed tasks  
+-  Tasks stay saved (thanks to `localStorage`)  
+-  Mobile-friendly layout  
 
 ---
 
