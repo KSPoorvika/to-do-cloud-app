@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Cloud To-Do App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    input {
+      padding: 10px;
+      width: 70%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 30px;
+    }
+
+    li {
+      background: #fff;
+      margin: 10px 0;
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      color: #aaa;
+      background-color: #e0ffe0;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .done-btn, .delete-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .done-btn:hover {
+      color: green;
+    }
+
+    .delete-btn:hover {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>✅ My Persistent To-Do List</h2>
+
+  <div>
+    <input id="taskInput" placeholder="Enter a task">
+    <button onclick="addTask()">Add</button>
+  </div>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    // Load saved tasks from localStorage on page load
+    window.onload = function () {
+      const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      savedTasks.forEach(task => createTaskElement(task.text, task.completed));
+    };
+
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      const taskText = input.value.trim();
+      if (taskText === "") return;
+      createTaskElement(taskText, false);
+      input.value = "";
+      saveTasksToStorage();
+    }
+
+    function createTaskElement(text, completed) {
+      const list = document.getElementById("taskList");
+      const li = document.createElement("li");
+      if (completed) li.classList.add("completed");
+
+      li.innerHTML = `
+        <span>${text}</span>
+        <div class="buttons">
+          <button class="done-btn" onclick="toggleDone(this)">✔️</button>
+          <button class="delete-btn" onclick="deleteTask(this)">🗑️</button>
+        </div>
+      `;
+
+      list.appendChild(li);
+    }
+
+    function deleteTask(button) {
+      const li = button.closest("li");
+      li.remove();
+      saveTasksToStorage();
+    }
+
+    function toggleDone(button) {
+      const li = button.closest("li");
+      li.classList.toggle("completed");
+      saveTasksToStorage();
+    }
+
+    function saveTasksToStorage() {
+      const tasks = [];
+      document.querySelectorAll("#taskList li").forEach(li => {
+        const text = li.querySelector("span").innerText;
+        const completed = li.classList.contains("completed");
+        tasks.push({ text, completed });
+      });
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+  </script>
+</body>
+</html>
